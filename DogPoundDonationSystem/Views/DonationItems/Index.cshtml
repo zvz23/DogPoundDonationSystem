@@ -1,0 +1,59 @@
+﻿@model IEnumerable<DogPoundDonationSystem.Models.DonationItem>
+
+@{
+    ViewData["Title"] = "Donations";
+}
+
+<h2>Donation Items for Donation Id: <a asp-action="Details" asp-controller="Home" asp-route-id="@ViewBag.DonationId">@ViewBag.DonationId</a></h2>
+
+<p>
+    <a asp-action="Donations" asp-controller="Home">Back To Donations List</a>
+    @if(User.IsInRole("Donor"))
+    {
+        <a asp-action="Create" asp-route-id="@ViewBag.DonationId">Add Item</a>
+
+    }
+</p>
+<table class="table table-primary table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if(item.Donation.Status != "Accepted") {
+                      <text>|</text>  <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                      <text>|</text>  <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+                    @if(item.Donation.Status == "Accepted" && User.IsInRole("Admin"))
+                    {
+                        <text>|</text>  <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

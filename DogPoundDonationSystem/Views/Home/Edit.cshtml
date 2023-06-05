@@ -1,0 +1,62 @@
+﻿@model DogPoundDonationSystem.Models.Donation
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Donation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" value="@Model.Id" />
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <select asp-for="Type" id="type" class="form-control" onchange="typeChange(event)" asp-items="ViewBag.DonationTypes"></select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div id="amount" class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Donations">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        var typeSelect = document.querySelector("#type")
+        if (typeSelect.value == "Goods") {
+            typeSelect.dispatchEvent(new Event("change"))
+        }
+        function typeChange(e) {
+            console.log("triggered")
+            if (e.target.value == "Goods") {
+
+                amount.classList.add("d-none")
+            }
+            else {
+                amount.classList.remove("d-none")
+            }
+
+        }
+    </script>
+}
+
